@@ -10,7 +10,9 @@
     "start": "node ./server/app.js",
     "pretest": "eslint ./server --fix",
     "test": "echo \"Tests complete\"",
-    "heroku-postbuild": "webpack"
+    "buildBundle": "webpack",
+    "watchBundle": "webpack watch",
+    "heroku-postbuild": "webpack --mode production"
   },
   "keywords": [
     "Node",
