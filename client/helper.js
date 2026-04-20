@@ -10,7 +10,7 @@ const handleError = (message) => {
 /* Sends post requests to the server using fetch. Will look for various
    entries in the response JSON object, and will handle them appropriately.
 */
-const sendPost = async (url, data) => {
+const sendPost = async (url, data, handler) => {
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -29,4 +29,18 @@ const sendPost = async (url, data) => {
     if (result.error) {
         handleError(result.error);
     }
+
+    if(handler){
+        handler(result);
+    }
+};
+
+const hideError = () => {
+    document.getElementById('domoMessage').classList.add('hidden');
+};
+
+module.exports = {
+    handleError,
+    sendPost,
+    hideError
 };
