@@ -75,7 +75,6 @@ const DomoList = (props) => {
             ? `data:image/png;base64,${domo.picture}`
             : "/assets/img/domoface.jpeg";
 
-
         return (
             <div key={domo.id} className="domo">
                 <img
@@ -83,6 +82,18 @@ const DomoList = (props) => {
                     alt="domo face"
                     className="domoFace"
                 />
+                <button
+                    onClick={() => {
+                        if (!domo.picture) return;
+
+                        const link = document.createElement('a');
+                        link.href = `data:image/png;base64,${domo.picture}`;
+                        link.download = `${domo.name}.png`;   // filename
+                        link.click();
+                    }}
+                >
+                    Download Picture
+                </button>
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
             </div>
