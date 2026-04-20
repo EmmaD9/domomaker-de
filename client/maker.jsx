@@ -9,13 +9,19 @@ const handleDomo = (e, onDomoAdded) => {
 
     const name = e.target.querySelector('#domoName').value;
     const age = e.target.querySelector('#domoAge').value;
+    const picture = e.target.querySelector('#domoPic').files[0];
 
-    if (!name || !age) {
+    if (!name || !age || !picture) {
         helper.handleError('All fields are required');
         return false;
     }
 
-    helper.sendPost(e.target.action, { name, age }, onDomoAdded);
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('age', age);
+    formData.append('picture', picture);
+
+    helper.sendPost(e.target.action, formData, onDomoAdded, true);
     return false;
 };
 
@@ -27,11 +33,17 @@ const DomoForm = (props) => {
             action="/maker"
             method="POST"
             className="domoForm"
+            encType="multipart/form-data"
         >
             <label htmlFor="name">Name: </label>
             <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+
             <label htmlFor="age">Age: </label>
             <input id="domoAge" type="number" min="0" name="age" />
+
+            <label htmlFor="picture">Picture (PNG): </label>
+            <input id="domoPic" type="file" name="picture" accept="image/png" />
+
             <input className="makeDomoSubmit" type="submit" value="Make Domo" />
         </form>
     );
@@ -60,7 +72,11 @@ const DomoList = (props) => {
     const domoNodes = domos.map(domo => {
         return (
             <div key={domo.id} className="domo">
-                <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
+                <img
+                    src={domo.picture ? `data:image/png;base64,${domo.picture}` : "/assets/img/domoface.jpeg"}
+                    alt="domo face"
+                    className="domoFace"
+                />
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
             </div>

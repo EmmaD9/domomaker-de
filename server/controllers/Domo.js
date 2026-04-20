@@ -1,30 +1,20 @@
 const models = require('../models');
 const Domo = models.Domo;
 
-// const makerPage = async (req, res) => {
-//     try{
-//         const query = {owner: req.session.account._id};
-//         const docs = await Domo.find(query).select('name age').lean().exec();
-
-//         return res.render('app', { domos: docs });
-//     } catch (err) {
-//         console.log(err);
-//         return res.status(500).json({ error: 'Error retrieving domos!' });
-//     }
-// }
 
 const makerPage = (req, res) => {
     return res.render('app');
 };
 
 const makeDomo = async (req, res) => {
-    if (!req.body.name || !req.body.age) {
+    if (!req.body.name || !req.body.age || !req.body.picture) {
         return res.status(400).json({ error: 'Bothname and age are required!' });
     }
 
     const domoData = {
         name: req.body.name,
         age: req.body.age,
+        picture: req.body.picture,
         owner: req.session.account._id,
     };
 

@@ -7,19 +7,26 @@ const handleError = (message) => {
     document.getElementById('domoMessage').classList.remove('hidden');
 };
 
-/* Sends post requests to the server using fetch. Will look for various
-   entries in the response JSON object, and will handle them appropriately.
-*/
+// Rewritten send post for handling files posted
 const sendPost = async (url, data, handler) => {
-    const response = await fetch(url, {
+    let options = {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
+    };
 
+    // If data is FormData doesn't set headers to prevent 400 error
+    if (data instanceof FormData) {
+        options.body = data;
+    } else {
+        // Otherwise will send JSON normally
+        options.headers = {
+            'Content-Type': 'application/json',
+        };
+        options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(url, options);
     const result = await response.json();
+
     document.getElementById('domoMessage').classList.add('hidden');
 
     if (result.redirect) {
@@ -30,7 +37,7 @@ const sendPost = async (url, data, handler) => {
         handleError(result.error);
     }
 
-    if(handler){
+    if (handler) {
         handler(result);
     }
 };

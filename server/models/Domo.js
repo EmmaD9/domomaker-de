@@ -20,6 +20,12 @@ const DomoSchema = new mongoose.Schema({
         required: true,
         ref: 'Account',
     },
+    picture: {
+        // raw PNG bytes
+        data: Buffer,
+        // e.g., 'image/png'
+        contentType: String,
+    },
     createdDate:{
         type: Date,
         default: Date.now,
