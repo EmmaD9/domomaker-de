@@ -13,11 +13,12 @@ const sendPost = async (url, data, handler) => {
         method: 'POST',
     };
 
-    // If data is FormData doesn't set headers to prevent 400 error
+    // If sending FormData (file upload)
     if (data instanceof FormData) {
         options.body = data;
+        // DO NOT set Content-Type here
     } else {
-        // Otherwise will send JSON normally
+        // Normal JSON request
         options.headers = {
             'Content-Type': 'application/json',
         };

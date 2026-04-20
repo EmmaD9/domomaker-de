@@ -7,14 +7,19 @@ const makerPage = (req, res) => {
 };
 
 const makeDomo = async (req, res) => {
-    if (!req.body.name || !req.body.age || !req.body.picture) {
+    if (!req.body.name || !req.body.age || !req.file) {
+        console.log("BODY:", req.body);
+        console.log("FILE:", req.file);
         return res.status(400).json({ error: 'Bothname and age are required!' });
     }
 
     const domoData = {
         name: req.body.name,
         age: req.body.age,
-        picture: req.body.picture,
+        picture: {
+            data: req.file.buffer,
+            contentType: req.file.mimetype,
+        },
         owner: req.session.account._id,
     };
 
