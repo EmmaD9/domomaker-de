@@ -70,10 +70,16 @@ const DomoList = (props) => {
     }
 
     const domoNodes = domos.map(domo => {
+        //convert picture (if it exists)
+        const imgSrc = domo.picture
+            ? `data:image/png;base64,${domo.picture}`
+            : "/assets/img/domoface.jpeg";
+
+
         return (
             <div key={domo.id} className="domo">
                 <img
-                    src={domo.picture ? `data:image/png;base64,${domo.picture}` : "/assets/img/domoface.jpeg"}
+                    src={imgSrc}
                     alt="domo face"
                     className="domoFace"
                 />

@@ -40,9 +40,20 @@ const makeDomo = async (req, res) => {
 const getDomos = async (req, res) => {
     try {
         const query = { owner: req.session.account._id };
-        const docs = await Domo.find(query).select('name age').lean().exec();
 
-        return res.json({ domos: docs });
+        // Get full domo docs including picture
+        const docs = await Domo.find(query).lean().exec();
+
+        const domos = docs.map((doc) => ({
+            _id: doc._id,
+            name: doc.name,
+            age: doc.age,
+            picture: doc.picture?.data
+                ? doc.picture.data.toString('base64')
+                : null,
+        }));
+
+        return res.json({ domos });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ error: 'Error retrieving domos!' });
